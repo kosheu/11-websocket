@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Websoket client</title>
+</head>     
+<body>
+            <h1>Websoket Клиент</h1>
+            <div id="messages"></div>
+            <input type="text" id="messageInpute" placeholder="введите сообщение">
+            <button id="sendButton">Отправить</button>
+    <script>
+        const soket = new WebSocket('ws://localhost:8080')
+        soket.addEventListener('open', function (event){
+            console.log('соединение установленно');
+        });
+        soket.onmessage = function(event){
+            let messageDiv=document.getElementById('messages');
+            let message = document.createElement("div");
+            message.textContent = event.data;
+            messageDiv.appendChild(message); 
+        };
+        document.getElementById('sendButton').addEventListener('click',function(){
+            const messageInpute=document.getElementById('messageInpute' );
+            const message = messageInpute.value;
+            soket.send(message);
+            messageInpute.value='';
+        })
+    </script>
+</body>
+</html>
+
